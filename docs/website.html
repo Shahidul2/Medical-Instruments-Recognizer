@@ -3,42 +3,39 @@ title: Medical Instrument Classifier
 layout: page
 ---
 
-<h1>Medical Instrument Classifier</h1>
-<p>Upload an image to classify medical instruments using our AI model.</p>
-
 <input id="photo" type="file">
 <div id="results"></div>
 
 <script type="module">
     import { Client } from "@gradio/client";
 
-    async function loaded(reader) {
+    async function loaded(reader) {   
         try {
-            console.log("Connecting to API...");
+            console.log("Sending request to API...");
+
+            // Convert Base64 Data URL to Blob
+            const response = await fetch(reader.result);
+            const imageBlob = await response.blob();
+
+            // Connect to Gradio API
             const client = await Client.connect("Shahidul279/medins-recognizer");
 
-            console.log("Sending image to API...");
-            
-            // Convert uploaded image into a Blob
-            const imageBlob = await fetch(reader.result).then(res => res.blob());
-
-            // Send image to API for prediction
+            // Send the image to Gradio API for prediction
             const result = await client.predict("/predict", { 
-                image: imageBlob  // ✅ Sending as a Blob as required in API docs
+                image: imageBlob  // ✅ Sending as a Blob (matches API documentation)
             });
 
-            console.log("API Response:", result); // Log API response
+            console.log("API Response:", result); // ✅ Log API response for debugging
 
-            if (result && result.data) {
-                const topPrediction = result.data[0]; // Extract first prediction
-                
+            if (result && result.data && result.data.length > 0) {
+                const label = result.data[0].label;
                 results.innerHTML = `<br/> 
                     <img src="${reader.result}" width="500"> 
-                    <p>Prediction: <strong>${topPrediction.label}</strong></p> 
-                    <p>Confidence: ${(topPrediction.confidence * 100).toFixed(2)}%</p>`;
+                    <p><strong>Prediction:</strong> ${label}</p>`;
             } else {
                 results.innerHTML = `<p style="color:red;">Error: No prediction returned.</p>`;
             }
+
         } catch (error) {
             console.error("Error:", error);
             results.innerHTML = `<p style="color:red;">API request failed.</p>`;
@@ -48,7 +45,7 @@ layout: page
     function read() {
         const reader = new FileReader();
         reader.addEventListener('load', () => loaded(reader));
-        reader.readAsDataURL(photo.files[0]); // ✅ Ensures image is read as Data URL
+        reader.readAsDataURL(photo.files[0]);
     }
 
     document.getElementById("photo").addEventListener('input', read);
