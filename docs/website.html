@@ -1,0 +1,38 @@
+---
+title: Medical Instrument Classifier
+layout: page
+---
+
+<h1>Medical Instrument Classifier</h1>
+<p>Upload an image to classify medical instruments using our AI model.</p>
+
+<input id="photo" type="file">
+<div id="results"></div>
+
+<script type="module">
+    import { Client } from "@gradio/client";
+
+    async function loaded(reader) {
+        const client = await Client.connect("Shahidul279/medins-recognizer");
+        const result = await client.predict("/predict", { 
+            image: reader.result
+        });
+
+        // Extract the highest confidence prediction
+        const topPrediction = result.data[0];
+
+        // Display the result
+        results.innerHTML = `<br/> 
+            <img src="${reader.result}" width="500"> 
+            <p>Prediction: <strong>${topPrediction.label}</strong></p> 
+            <p>Confidence: ${(topPrediction.confidence * 100).toFixed(2)}%</p>`;
+    }
+
+    function read() {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => loaded(reader));
+        reader.readAsDataURL(photo.files[0]);
+    }
+
+    document.getElementById("photo").addEventListener('input', read);
+</script>
