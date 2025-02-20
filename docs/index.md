@@ -3,7 +3,6 @@ title: Home
 layout: page
 ---
 
-# Medical Instrument Classifier
 A simple image classification web application that can classify **10 different types of medical instruments**.
 
 ### The supported instruments are:
