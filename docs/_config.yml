@@ -3,7 +3,7 @@ plugins:
 - jekyll-remote-theme
 
 title: Medical Instrument Classifier
-description: An image classification API that classifies 10 different types of medical instruments.
+description: An image classification application that classifies 10 different types of medical instruments.
 
 author:
   name: Shahidul Islam

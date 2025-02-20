@@ -4,7 +4,7 @@ layout: page
 ---
 
 # Medical Instrument Classifier
-An image classification API that can classify **10 different types of medical instruments**.
+A simple image classification web application that can classify **10 different types of medical instruments**.
 
 ### The supported instruments are:
 - Scalpel
