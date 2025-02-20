@@ -3,12 +3,16 @@ title: Medical Instrument Classifier
 layout: page
 ---
 
+<h1>Medical Instrument Classifier</h1>
+<p>Upload an image to classify medical instruments using our AI model.</p>
+
 <input id="photo" type="file">
 <div id="results"></div>
 
-<script type="module">
-    import { Client } from "@gradio/client";
+<!-- Load Gradio Client from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js"></script>
 
+<script>
     async function loaded(reader) {   
         try {
             console.log("Sending request to API...");
@@ -18,7 +22,7 @@ layout: page
             const imageBlob = await response.blob();
 
             // Connect to Gradio API
-            const client = await Client.connect("Shahidul279/medins-recognizer");
+            const client = await gradioClient.Client.connect("Shahidul279/medins-recognizer");
 
             // Send the image to Gradio API for prediction
             const result = await client.predict("/predict", { 
