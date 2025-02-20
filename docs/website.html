@@ -13,25 +13,42 @@ layout: page
     import { Client } from "@gradio/client";
 
     async function loaded(reader) {
-        const client = await Client.connect("Shahidul279/medins-recognizer");
-        const result = await client.predict("/predict", { 
-            image: reader.result
-        });
+        try {
+            console.log("Connecting to API...");
+            const client = await Client.connect("Shahidul279/medins-recognizer");
 
-        // Extract the highest confidence prediction
-        const topPrediction = result.data[0];
+            console.log("Sending image to API...");
+            
+            // Convert uploaded image into a Blob
+            const imageBlob = await fetch(reader.result).then(res => res.blob());
 
-        // Display the result
-        results.innerHTML = `<br/> 
-            <img src="${reader.result}" width="500"> 
-            <p>Prediction: <strong>${topPrediction.label}</strong></p> 
-            <p>Confidence: ${(topPrediction.confidence * 100).toFixed(2)}%</p>`;
+            // Send image to API for prediction
+            const result = await client.predict("/predict", { 
+                image: imageBlob  // ✅ Sending as a Blob as required in API docs
+            });
+
+            console.log("API Response:", result); // Log API response
+
+            if (result && result.data) {
+                const topPrediction = result.data[0]; // Extract first prediction
+                
+                results.innerHTML = `<br/> 
+                    <img src="${reader.result}" width="500"> 
+                    <p>Prediction: <strong>${topPrediction.label}</strong></p> 
+                    <p>Confidence: ${(topPrediction.confidence * 100).toFixed(2)}%</p>`;
+            } else {
+                results.innerHTML = `<p style="color:red;">Error: No prediction returned.</p>`;
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            results.innerHTML = `<p style="color:red;">API request failed.</p>`;
+        }
     }
 
     function read() {
         const reader = new FileReader();
         reader.addEventListener('load', () => loaded(reader));
-        reader.readAsDataURL(photo.files[0]);
+        reader.readAsDataURL(photo.files[0]); // ✅ Ensures image is read as Data URL
     }
 
     document.getElementById("photo").addEventListener('input', read);
