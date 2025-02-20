@@ -9,24 +9,20 @@ layout: page
 <input id="photo" type="file">
 <div id="results"></div>
 
-<!-- Load Gradio Client from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.min.js"></script>
+<!-- Load Gradio Client from CDN in the Head -->
+<script type="module">
+    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
 
-<script>
-    async function loaded(reader) {   
+    async function loaded(file) {   
         try {
             console.log("Sending request to API...");
 
-            // Convert Base64 Data URL to Blob
-            const response = await fetch(reader.result);
-            const imageBlob = await response.blob();
+            // Connect to Gradio API
+            const client = await Client.connect("Shahidul279/medins-recognizer");
 
-            // Correct Gradio Client Reference
-            const client = await window.gradio_client.Client.connect("Shahidul279/medins-recognizer");
-
-            // Send the image to Gradio API for prediction
+            // Send the image file directly to API
             const result = await client.predict("/predict", { 
-                image: imageBlob  // ✅ Sending as a Blob (matches API documentation)
+                image: file  // ✅ Sending as a File (matches API documentation)
             });
 
             console.log("API Response:", result); // ✅ Log API response for debugging
@@ -34,7 +30,7 @@ layout: page
             if (result && result.data && result.data.length > 0) {
                 const label = result.data[0].label;
                 results.innerHTML = `<br/> 
-                    <img src="${reader.result}" width="500"> 
+                    <img src="${URL.createObjectURL(file)}" width="500"> 
                     <p><strong>Prediction:</strong> ${label}</p>`;
             } else {
                 results.innerHTML = `<p style="color:red;">Error: No prediction returned.</p>`;
@@ -46,11 +42,12 @@ layout: page
         }
     }
 
-    function read() {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => loaded(reader));
-        reader.readAsDataURL(photo.files[0]);
+    function read(event) {
+        const file = event.target.files[0];
+        if (file) {
+            loaded(file);
+        }
     }
 
-    document.getElementById("photo").addEventListener('input', read);
+    document.getElementById("photo").addEventListener('change', read);
 </script>
