@@ -12,8 +12,8 @@ This model can classify **10 types of medical instruments**:
 
 ## How It Works
  **Dataset:** Collected using DuckDuckGo, cleaned using FastAI’s `ImageClassifierCleaner`.  
- **Training:** Fine-tuned a **DenseNet121** model, achieving **~90% accuracy**. Find details in `notebooks`
- **Deployment:** Hosted on **Hugging Face Spaces** with **Gradio** for easy interaction. See 'deployment' folder
+ **Training:** Fine-tuned a **DenseNet121** model, achieving **~90% accuracy**. Find details in `notebooks`.
+ **Deployment:** Hosted on **Hugging Face Spaces** with **Gradio** for easy interaction. See 'deployment' folder.
  **Web API:** Integrated with **GitHub Pages** for real-time classification.  
 
 ---
