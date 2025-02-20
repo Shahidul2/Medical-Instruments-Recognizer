@@ -1,16 +1,16 @@
 # Medical Instrument Classifier
-A TL-based vision model that **recognizes 10 specific medical instruments** from images.  
+A TL-based vision model that recognize **10 specific medical instruments** from images.  
 
 ---
 
-## ** What It Can Recognize**
+## What It Can Recognize
 This model can classify **10 types of medical instruments**:
 - Scalpel, Thermometer, Forceps, Bone Saw, Reflex Hammer  
 - Ultrasound Probe, Defibrillator, Otoscope, ECG Machine, Glucometer  
 
 ---
 
-## ** How It Works**
+## How It Works
  **Dataset:** Collected using DuckDuckGo, cleaned using FastAI’s `ImageClassifierCleaner`.  
  **Training:** Fine-tuned a **DenseNet121** model, achieving **~90% accuracy**.  
  **Deployment:** Hosted on **Hugging Face Spaces** with **Gradio** for easy interaction.  
@@ -18,11 +18,10 @@ This model can classify **10 types of medical instruments**:
 
 ---
 
-## ** Try It Out**
+## Try It Out
 - **Gradio App** → [Test the Model](https://huggingface.co/spaces/Shahidul279/medins-recognizer)  
 - **GitHub Pages API Integration** → [Live Web App](https://shahidul2.github.io/Medical-Instruments-Recognizer/)  
 
----
 
 ## **Tech Stack**
 - **FastAI + PyTorch** for training  
