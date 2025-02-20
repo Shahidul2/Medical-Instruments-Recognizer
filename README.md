@@ -1,4 +1,4 @@
-# 🏥 Medical Instrument Classifier
+# Medical Instrument Classifier
 A TL-based vision model that **recognizes 10 specific medical instruments** from images.  
 
 ---
