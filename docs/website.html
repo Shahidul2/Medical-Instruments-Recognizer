@@ -10,7 +10,7 @@ layout: page
 <div id="results"></div>
 
 <!-- Load Gradio Client from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.min.js"></script>
 
 <script>
     async function loaded(reader) {   
@@ -21,8 +21,8 @@ layout: page
             const response = await fetch(reader.result);
             const imageBlob = await response.blob();
 
-            // Connect to Gradio API
-            const client = await gradioClient.Client.connect("Shahidul279/medins-recognizer");
+            // Correct Gradio Client Reference
+            const client = await window.gradio_client.Client.connect("Shahidul279/medins-recognizer");
 
             // Send the image to Gradio API for prediction
             const result = await client.predict("/predict", { 
